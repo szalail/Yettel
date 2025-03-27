@@ -19,9 +19,13 @@ struct YettelButton: View {
 		.font(.headline)
 		.padding()
 		.frame(maxWidth: .infinity)
-		.background(.black)
-		.foregroundColor(.white)
+		.background(design == .filled ? .yettelBlue : .white)
+		.foregroundColor(design == .filled ? .white : .yettelBlue)
 		.cornerRadius(25)
+		.overlay(
+			RoundedRectangle(cornerRadius: 25)
+				.stroke(.yettelBlue, lineWidth: 2)
+		)
     }
 }
 
@@ -31,5 +35,6 @@ enum ButtonDesign {
 }
 
 #Preview {
+	YettelButton(design: .empty, text: "Mybutton", onTap: {})
 	YettelButton(design: .filled, text: "Mybutton", onTap: {})
 }
