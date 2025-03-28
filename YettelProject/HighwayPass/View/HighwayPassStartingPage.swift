@@ -35,8 +35,10 @@ struct HighwayPassStartingPage: View {
 					VStack(alignment: .leading) {
 						Text("License Plate")
 							.font(.system(size: Padding.double))
+							.foregroundColor(.yettelBlue)
 						Text("Name")
 							.font(.system(size: Padding.singleAndHalf))
+							.foregroundColor(.yettelBlue)
 					}
 				}
 				.padding(.vertical, Padding.single)
@@ -47,6 +49,7 @@ struct HighwayPassStartingPage: View {
 					HStack {
 						Text(StartingPageConstants.countryTileTitle)
 							.font(.system(size: Padding.doubleAndHalf, weight: .bold))
+							.foregroundColor(.yettelBlue)
 							.padding(.top, Padding.single)
 						Spacer()
 					}
@@ -62,8 +65,11 @@ struct HighwayPassStartingPage: View {
 										.foregroundColor(.yettelBlue)
 								}
 								Text(option)
+									.foregroundColor(.yettelBlue)
 								Spacer()
 								Text("Price Ft")
+									.foregroundColor(.yettelBlue)
+									.bold()
 							}
 							.padding(Padding.double)
 							.frame(height: StartingPageConstants.optionFrameHeight)
@@ -95,9 +101,12 @@ struct HighwayPassStartingPage: View {
 			}
 			
 			Section {
-				Text(StartingPageConstants.countyLinkText)
-					.font(.system(size: Padding.doubleAndHalf, weight: .bold))
-					.padding(.vertical, Padding.singleAndHalf)
+				NavigationLink(value: "CountySelection") {
+					Text(StartingPageConstants.countyLinkText)
+						.font(.system(size: Padding.doubleAndHalf, weight: .bold))
+						.foregroundColor(.yettelBlue)
+						.padding(.vertical, Padding.singleAndHalf)
+				}
 			}
 		}
 		.navigationTitle(FeatureNavigationTitle.HighwayPass)

@@ -13,7 +13,7 @@ struct HomeView: View {
 					design: .filled,
 					text: "Autópálya matricák",
 					onTap: {
-						path.append("HighwayPass") // Append a unique identifier for the destination
+						path.append("HighwayPass")
 					}
 				)
 				.padding(.horizontal, Padding.triple)
@@ -21,6 +21,8 @@ struct HomeView: View {
 			.navigationDestination(for: String.self) { value in
 				if value == "HighwayPass" {
 					HighwayPassStartingPage()
+				} else if value == "CountySelection" {
+					HighwayPassCountySelectionView()
 				}
 			}
 		}
