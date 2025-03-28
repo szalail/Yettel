@@ -1,21 +1,30 @@
-//
-//  SwiftUIView.swift
-//  YettelProject
-//
-//  Created by Macbook on 2025. 03. 27..
-//
-
 import SwiftUI
 
 struct HomeView: View {
-    var body: some View {
-		ZStack {
-			Color.yettelGreen
-				.ignoresSafeArea()
-			YettelButton(design: .filled, text: "Autópálya matricák", onTap: {})
+	@State private var path = NavigationPath() // Path for managing navigation stack
+
+	var body: some View {
+		NavigationStack(path: $path) {
+			ZStack {
+				Color.yettelGreen
+					.ignoresSafeArea()
+				
+				YettelButton(
+					design: .filled,
+					text: "Autópálya matricák",
+					onTap: {
+						path.append("HighwayPass") // Append a unique identifier for the destination
+					}
+				)
 				.padding(.horizontal, Padding.triple)
+			}
+			.navigationDestination(for: String.self) { value in
+				if value == "HighwayPass" {
+					HighwayPassStartingPage()
+				}
+			}
 		}
-    }
+	}
 }
 
 #Preview {

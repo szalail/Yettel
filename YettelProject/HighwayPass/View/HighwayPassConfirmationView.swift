@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Constants {
+struct SuccessPAgeConstants {
 	static let buttonTitle: String = "Rendben"
 	static let message: String = "A matricákat sikeresen kifizetted!"
 	static let buttonWidth: CGFloat = 311
@@ -18,7 +18,7 @@ struct Constants {
 	static let messageFontSize: CGFloat = 40
 }
 
-struct ConfirmationView: View {
+struct HighwayPassConfirmationView: View {
     var body: some View {
 		ZStack {
 			Color.yettelGreen
@@ -27,13 +27,13 @@ struct ConfirmationView: View {
 			VStack {
 				Spacer()
 				HStack {
-					Text(Constants.message)
+					Text(SuccessPAgeConstants.message)
 						.foregroundColor(.yettelBlue)
-						.font(.system(size: Constants.messageFontSize, weight: .bold))
+						.font(.system(size: SuccessPAgeConstants.messageFontSize, weight: .bold))
 						.lineSpacing(Padding.half)
 						.frame(
-							width: Constants.textFrameWidth,
-							height: Constants.textFrameHeight
+							width: SuccessPAgeConstants.textFrameWidth,
+							height: SuccessPAgeConstants.textFrameHeight
 						)
 
 					Spacer()
@@ -46,15 +46,15 @@ struct ConfirmationView: View {
 						.resizable()
 						.scaledToFit()
 						.frame(
-							width: Constants.guyImageFrameWidth,
-							height: Constants.guyImageFrameHeight,
+							width: SuccessPAgeConstants.guyImageFrameWidth,
+							height: SuccessPAgeConstants.guyImageFrameHeight,
 							alignment: .trailing
 						)
 				}
 				
-				YettelButton(design: .filled, text: Constants.buttonTitle, onTap: {})
+				YettelButton(design: .filled, text: SuccessPAgeConstants.buttonTitle, onTap: {})
 					.padding(.vertical, Padding.singleAndHalf)
-					.frame(width: Constants.buttonWidth)
+					.frame(width: SuccessPAgeConstants.buttonWidth)
 			}
 			VStack {
 				Image("Confetti")
@@ -68,5 +68,5 @@ struct ConfirmationView: View {
 }
 
 #Preview {
-	ConfirmationView()
+	HighwayPassConfirmationView()
 }
