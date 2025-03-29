@@ -23,6 +23,8 @@ struct ChoiceItem: Identifiable {
 }
 
 struct HighwayPassCountySelectionView: View {
+	@EnvironmentObject var pathManager: NavigationPathManager
+	
 	@State private var items: [ChoiceItem] = [
 			ChoiceItem(isSelected: false, firstText: "Option 1", secondText: "Details 1"),
 			ChoiceItem(isSelected: false, firstText: "Option 2", secondText: "Details 2"),
@@ -36,7 +38,6 @@ struct HighwayPassCountySelectionView: View {
 					Text(CountySelectioneConstants.countySelectionTitle)
 						.font(.system(size: Padding.doubleAndHalf, weight: .bold))
 						.foregroundColor(.yettelBlue)
-						.padding(.top, Padding.single)
 					Spacer()
 				}
 				
@@ -57,9 +58,8 @@ struct HighwayPassCountySelectionView: View {
 						}
 						.buttonStyle(PlainButtonStyle())
 						
-						// Editable Text Fields
 						Text(item.firstText)
-							.foregroundColor(.yettelBlue)
+							.foregroundColor(item.isSelected ? .secondary : .yettelBlue)
 						
 						Spacer()
 						
@@ -92,7 +92,9 @@ struct HighwayPassCountySelectionView: View {
 				YettelButton(
 					design: .filled,
 					text: CountySelectioneConstants.buttonText,
-					onTap: {}
+					onTap: {
+						pathManager.path.append("Confirmation")
+					}
 				)
 			}
 		}

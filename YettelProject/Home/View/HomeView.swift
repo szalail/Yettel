@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct HomeView: View {
-	@State private var path = NavigationPath() // Path for managing navigation stack
-
+	@StateObject var pathManager = NavigationPathManager()
+	
 	var body: some View {
-		NavigationStack(path: $path) {
+		NavigationStack(path: $pathManager.path) {
 			ZStack {
 				Color.yettelGreen
 					.ignoresSafeArea()
@@ -13,7 +13,7 @@ struct HomeView: View {
 					design: .filled,
 					text: "Autópálya matricák",
 					onTap: {
-						path.append("HighwayPass")
+						pathManager.path.append("HighwayPass")
 					}
 				)
 				.padding(.horizontal, Padding.triple)
@@ -23,9 +23,15 @@ struct HomeView: View {
 					HighwayPassStartingPage()
 				} else if value == "CountySelection" {
 					HighwayPassCountySelectionView()
+				} else if value == "Confirmation" {
+					HighwayPassConfirmationView()
+				}
+				else if value == "Success" {
+					HighwayPassSuccessView()
 				}
 			}
 		}
+		.environmentObject(pathManager)
 	}
 }
 
