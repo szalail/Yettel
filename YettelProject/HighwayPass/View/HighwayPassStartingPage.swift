@@ -17,29 +17,35 @@ struct StartingPageConstants {
 }
 
 struct HighwayPassStartingPage: View {
+	@StateObject private var viewModel = HighwayPassViewModel()
 	@State private var selectedOption: String? = nil
-	
+
 	let options = ["Option 1", "Option 2", "Option 3", "Option 4"]
-	
-    var body: some View {
+
+	var body: some View {
 		List {
 			Section {
 				HStack {
-					Image("Guy")
-						.resizable()
-						.scaledToFit()
-						.frame(
-							width: StartingPageConstants.carIconSize,
-							height: StartingPageConstants.carIconSize
-						)
+					if let type = viewModel.vehicleInfo?.type {
+						Image(type == "CAR" ? "Car" : "")
+							.resizable()
+							.scaledToFit()
+							.frame(
+								width: StartingPageConstants.carIconSize,
+								height: StartingPageConstants.carIconSize
+							)
+					}
+					
 					VStack(alignment: .leading) {
-						Text("License Plate")
+						Text(viewModel.vehicleInfo?.plate ?? "Error")
 							.font(.system(size: Padding.double))
 							.foregroundColor(.yettelBlue)
-						Text("Name")
+							.padding(.bottom, Padding.half)
+						Text(viewModel.vehicleInfo?.name ?? "Error")
 							.font(.system(size: Padding.singleAndHalf))
 							.foregroundColor(.yettelBlue)
 					}
+					.padding(.leading, Padding.half)
 				}
 				.padding(.vertical, Padding.single)
 			}
@@ -89,7 +95,6 @@ struct HighwayPassStartingPage: View {
 						}
 					}
 					
-					
 					YettelButton(
 						design: .filled,
 						text: StartingPageConstants.purchaseButtonText,
@@ -112,7 +117,10 @@ struct HighwayPassStartingPage: View {
 		.navigationTitle(FeatureNavigationTitle.HighwayPass)
 		.toolbarBackground(Color.yettelGreen, for: .navigationBar)
 		.toolbarBackground(.visible, for: .navigationBar)
-    }
+		.task {
+			viewModel.fetchVehicleInfo()
+		}
+	}
 }
 
 #Preview {
