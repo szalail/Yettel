@@ -18,10 +18,8 @@ struct StartingPageConstants {
 
 struct HighwayPassStartingPage: View {
 	@StateObject private var viewModel = HighwayPassViewModel()
-	@State private var selectedOption: String? = nil
-
-	let options = ["Option 1", "Option 2", "Option 3", "Option 4"]
-
+	@State private var selectedVignette: VignetteType? = nil
+	
 	var body: some View {
 		List {
 			Section {
@@ -61,38 +59,16 @@ struct HighwayPassStartingPage: View {
 					}
 
 					VStack(spacing: Padding.double) {
-						ForEach(options, id: \.self) { option in
-							HStack {
-								if selectedOption == option {
-									Image(systemName: "circle.fill")
-										.foregroundColor(.yettelBlue)
-								} else {
-									Image(systemName: "circle")
-										.foregroundColor(.yettelBlue)
-								}
-								Text(option)
-									.foregroundColor(.yettelBlue)
-								Spacer()
-								Text("Price Ft")
-									.foregroundColor(.yettelBlue)
-									.bold()
-							}
-							.padding(Padding.double)
-							.frame(height: StartingPageConstants.optionFrameHeight)
-							.contentShape(Rectangle())
-							.overlay {
-								if selectedOption == option {
-									RoundedRectangle(cornerRadius: StartingPageConstants.cornerRadius)
-										.stroke(Color.yettelBlue, lineWidth: Padding.quarter)
-								} else {
-									RoundedRectangle(cornerRadius: StartingPageConstants.cornerRadius)
-										.stroke(Color.secondary, lineWidth: Padding.quarter)
-								}
-							}
-							.onTapGesture {
-								selectedOption = option
+						ForEach(viewModel.wholeVignetteTypes, id: \.id) { vignette in
+							let isSelected = selectedVignette?.id == vignette.id
+							VignetteRow(
+								vignette: vignette,
+								isSelected: isSelected
+							) {
+								selectedVignette = vignette
 							}
 						}
+
 					}
 					
 					YettelButton(
@@ -119,6 +95,43 @@ struct HighwayPassStartingPage: View {
 		.toolbarBackground(.visible, for: .navigationBar)
 		.task {
 			viewModel.fetchVehicleInfo()
+			viewModel.fetchVignetteTypes()
+		}
+	}
+}
+
+// MARK: - Subview: VignetteRow
+private struct VignetteRow: View {
+	let vignette: VignetteType
+	let isSelected: Bool
+	let onSelect: () -> Void
+	
+	let vignetteTexts: [String: String] = [
+		"DAY": "D1 - napi (1 napos)",
+		"WEEK": "D1 - heti (10 napos)",
+		"MONTH": "D1 - havi"
+	]
+
+	var body: some View {
+		HStack {
+			Image(systemName: isSelected ? "circle.fill" : "circle")
+				.foregroundColor(.yettelBlue)
+			Text(vignetteTexts[vignette.name] ?? "")
+				.foregroundColor(.yettelBlue)
+			Spacer()
+			Text("\(vignette.sum, specifier: "%.0f") Ft")
+				.foregroundColor(.yettelBlue)
+				.bold()
+		}
+		.padding(Padding.double)
+		.frame(height: StartingPageConstants.optionFrameHeight)
+		.contentShape(Rectangle())
+		.overlay {
+			RoundedRectangle(cornerRadius: StartingPageConstants.cornerRadius)
+				.stroke(isSelected ? Color.yettelBlue : Color.secondary, lineWidth: Padding.quarter)
+		}
+		.onTapGesture {
+			onSelect()
 		}
 	}
 }
