@@ -10,6 +10,9 @@ import SwiftUI
 class HighwayPassViewModel: ObservableObject {
 	@Published var vehicleInfo: VehicleInfo?
 	@Published var wholeVignetteTypes: [VignetteType] = []
+	@Published var orderSuccess: Bool = false
+	@Published var isLoading: Bool = false
+	@Published var errorMessage: String? = nil
 
 	func fetchVehicleInfo() {
 		NetworkService.shared.fetchVehicleInfo { result in
@@ -24,7 +27,7 @@ class HighwayPassViewModel: ObservableObject {
 			}
 		}
 	}
-	
+
 	func fetchVignetteTypes() {
 		NetworkService.shared.fetchVignetteTypes { result in
 			DispatchQueue.main.async {
@@ -38,4 +41,33 @@ class HighwayPassViewModel: ObservableObject {
 			}
 		}
 	}
+
+	func orderVignette(_ vignette: VignetteType, completion: @escaping (Bool) -> Void) {
+		guard let vehicle = vehicleInfo else {
+			print("Error: No vehicle info available")
+			completion(false)
+			return
+		}
+
+		let orderRequest = HighwayOrderRequest(highwayOrders: [
+			HighwayOrderRequest.HighwayOrder(type: vignette.name, category: vehicle.type, cost: vignette.sum)
+		])
+
+		isLoading = true
+		NetworkService.shared.orderVignette(orderRequest: orderRequest) { result in
+			DispatchQueue.main.async {
+				self.isLoading = false
+				switch result {
+				case .success:
+					self.orderSuccess = true
+					completion(true)
+				case .failure(let error):
+					self.errorMessage = "Order failed: \(error.localizedDescription)"
+					print("Error ordering vignette:", error.localizedDescription)
+					completion(false)
+				}
+			}
+		}
+	}
+
 }

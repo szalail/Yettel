@@ -74,6 +74,41 @@ class NetworkService {
 			}
 		}.resume()
 	}
+	
+	func orderVignette(orderRequest: HighwayOrderRequest, completion: @escaping (Result<Void, Error>) -> Void) {
+		guard let url = URL(string: "http://localhost:8080/v1/highway/orde") else {
+			completion(.failure(NetworkError.invalidURL))
+			return
+		}
+
+		do {
+			let jsonData = try JSONEncoder().encode(orderRequest)
+
+			var request = URLRequest(url: url)
+			request.httpMethod = "POST"
+			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+			request.httpBody = jsonData
+
+			URLSession.shared.dataTask(with: request) { data, response, error in
+				if let error = error {
+					completion(.failure(error))
+					return
+				}
+
+				guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+					completion(.failure(NetworkError.noData))
+					return
+				}
+
+				completion(.success(()))
+			}.resume()
+
+		} catch {
+			completion(.failure(NetworkError.decodingError))
+		}
+	}
+
+
 }
 
 enum NetworkError: Error {

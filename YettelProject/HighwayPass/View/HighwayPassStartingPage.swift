@@ -19,6 +19,7 @@ struct StartingPageConstants {
 struct HighwayPassStartingPage: View {
 	@StateObject private var viewModel = HighwayPassViewModel()
 	@State private var selectedVignette: VignetteType? = nil
+	@EnvironmentObject var pathManager: NavigationPathManager
 	
 	var body: some View {
 		List {
@@ -74,8 +75,16 @@ struct HighwayPassStartingPage: View {
 					YettelButton(
 						design: .filled,
 						text: StartingPageConstants.purchaseButtonText,
-						onTap: {}
+						onTap: {
+							guard let vignette = selectedVignette else { return }
+							viewModel.orderVignette(vignette) { success in
+								if success {
+									pathManager.path.append("Success")
+								}
+							}
+						}
 					)
+					.disabled(viewModel.isLoading || selectedVignette == nil)
 					.buttonStyle(PlainButtonStyle())
 					.padding(.vertical, Padding.singleAndHalf)
 				}
