@@ -76,7 +76,7 @@ class NetworkService {
 	}
 	
 	func orderVignette(orderRequest: HighwayOrderRequest, completion: @escaping (Result<Void, Error>) -> Void) {
-		guard let url = URL(string: "http://localhost:8080/v1/highway/orde") else {
+		guard let url = URL(string: "http://localhost:8080/v1/highway/order") else {
 			completion(.failure(NetworkError.invalidURL))
 			return
 		}

@@ -19,6 +19,8 @@ struct SuccessPageConstants {
 }
 
 struct HighwayPassSuccessView: View {
+	@EnvironmentObject var pathManager: NavigationPathManager
+
     var body: some View {
 		ZStack {
 			Color.yettelGreen
@@ -52,7 +54,9 @@ struct HighwayPassSuccessView: View {
 						)
 				}
 				
-				YettelButton(design: .filled, text: SuccessPageConstants.buttonTitle, onTap: {})
+				YettelButton(design: .filled, text: SuccessPageConstants.buttonTitle, onTap: {
+					pathManager.path.removeLast(pathManager.path.count)
+				})
 					.padding(.vertical, Padding.singleAndHalf)
 					.frame(width: SuccessPageConstants.buttonWidth)
 			}
@@ -64,6 +68,7 @@ struct HighwayPassSuccessView: View {
 				Spacer()
 			}
 		}
+		.navigationBarBackButtonHidden(true)
     }
 }
 
