@@ -15,31 +15,13 @@ struct YettelButton: View {
 	let design: ButtonDesign
 	let text: String
 	let onTap: () -> Void
-	/*
-	 var body: some View {
-	 Button(text) {
-	 onTap()
-	 }
-	 .font(.headline)
-	 .padding()
-	 .frame(maxWidth: .infinity)
-	 .background(design == .filled ? .yettelBlue : .white)
-	 .foregroundColor(design == .filled ? .white : .yettelBlue)
-	 .cornerRadius(25)
-	 .overlay(
-	 RoundedRectangle(cornerRadius: 25)
-	 .stroke(.yettelBlue, lineWidth: 2)
-	 )
-	 .contentShape(Rectangle())
-	 }
-	 */
 	var body: some View {
 		Button(action: {
 			onTap()
 		}) {
 			Text(text)
 				.font(.headline)
-				.frame(maxWidth: .infinity) // Ensures the text takes the full width
+				.frame(maxWidth: .infinity)
 				.padding()
 				.background(design == .filled ? Color.yettelBlue : Color.white)
 				.foregroundColor(design == .filled ? .white : .yettelBlue)
